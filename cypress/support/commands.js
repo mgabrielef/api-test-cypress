@@ -39,3 +39,11 @@ Cypress.Commands.add('editProduct', (id, token, product, price, description, qua
       }
   })
 })
+
+Cypress.Commands.add('deleteProduct', (id, token)=>{
+  cy.request({
+    method : 'DELETE',
+    url : `produtos/${id}`,
+    headers : {authorization : token},
+  })
+})

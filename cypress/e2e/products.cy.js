@@ -22,21 +22,21 @@ describe('API Test - Products', () => {
     it('should create product succesfully - POST', ()=>{
         let product = 'Product ' + Math.floor(Math.random() * 100000)
         cy.createProduct(token, product, 244, 'Product', 123)
-        .should((response)=>{
-            expect(response.status).equal(201)
-            expect(response.body.message).equal("Cadastro realizado com sucesso")
-        })
+            .should((response)=>{
+                expect(response.status).equal(201)
+                expect(response.body.message).equal("Cadastro realizado com sucesso")
+            })
     })
 
     it('should shown error message when creating product with already existing name - POST', ()=>{
         cy.createProduct(token, 'Logitech MX Vertical', 244, 'Mouse', 123)
-        .should((response)=>{
-            expect(response.status).equal(400)
-            expect(response.body.message).equal("Já existe produto com esse nome")
-        })
+            .should((response)=>{
+                expect(response.status).equal(400)
+                expect(response.body.message).equal("Já existe produto com esse nome")
+            })
     })
 
-    it.only('should edit product - PUT', () => {
+    it('should edit product - PUT', () => {
         let product = 'Product ' + Math.floor(Math.random() * 100000)
         cy.createProduct(token, product, 244, 'Product', 123)
             .then(response=>{
@@ -47,5 +47,18 @@ describe('API Test - Products', () => {
                     expect(response.body.message).equal("Registro alterado com sucesso")
                 })
             })
-    });
+    })
+
+    it.only('should delete product successfully', () => {
+        let product = 'Product ' + Math.floor(Math.random() * 100000)
+        cy.createProduct(token, product, 244, 'Product', 123)
+            .then(response=>{
+                let id = response.body._id
+                cy.deleteProduct(id, token)
+                .should((response)=>{
+                    expect(response.status).equal(200)
+                    expect(response.body.message).equal("Registro excluído com sucesso")
+                })
+            })
+    })
 })
