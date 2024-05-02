@@ -49,7 +49,7 @@ describe('API Test - Products', () => {
             })
     })
 
-    it.only('should delete product successfully', () => {
+    it('should delete product successfully - DELETE', () => {
         cy.createProduct(token, 'Delete Product', 244, 'Product', 123)
             .then(response=>{
                 let id = response.body._id
