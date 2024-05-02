@@ -50,8 +50,7 @@ describe('API Test - Products', () => {
     })
 
     it.only('should delete product successfully', () => {
-        let product = 'Product ' + Math.floor(Math.random() * 100000)
-        cy.createProduct(token, product, 244, 'Product', 123)
+        cy.createProduct(token, 'Delete Product', 244, 'Product', 123)
             .then(response=>{
                 let id = response.body._id
                 cy.deleteProduct(id, token)
