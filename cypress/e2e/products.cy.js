@@ -1,6 +1,14 @@
 /// < reference types="cypress"/>
 
 describe('API Test - Products', () => {
+
+    let token
+    beforeEach(()=>{
+        cy.token('mark@test.com', 'test').then(tkn=>{
+            token = tkn
+        })
+    })
+
     it('list products - GET', () => {
         cy.request({
             method : 'GET',
@@ -11,21 +19,20 @@ describe('API Test - Products', () => {
         })
     })
     
-    it.only('create product - POST', ()=>{
-        let token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hcmtAdGVzdC5jb20iLCJwYXNzd29yZCI6InRlc3QiLCJpYXQiOjE3MTMzODE4NTQsImV4cCI6MTcxMzM4MjQ1NH0.s9ebxqne9shO8-RcFPLO-T-1wwPCgzTOuEw6hMsES-Q"
-        cy.request({
-            method : 'POST',
-            url : 'produtos',
-            headers : {authorization : token},
-            body:{
-                "nome": "Webcam HD Logitech C270",
-                "preco": 164,
-                "descricao": "Webcam",
-                "quantidade": 213
-            }
-        }).should((response)=>{
+    it('create product succesfully - POST', ()=>{
+        let product = 'Product ' + Math.floor(Math.random() * 100000)
+        cy.createProduct(token, product, 244, 'Mouse', 123)
+        .should((response)=>{
             expect(response.status).equal(201)
             expect(response.body.message).equal("Cadastro realizado com sucesso")
+        })
+    })
+
+    it('should shown error message when creating product with already existing name - POST', ()=>{
+        cy.createProduct(token, 'Logitech MX Vertical', 244, 'Mouse', 123)
+        .should((response)=>{
+            expect(response.status).equal(400)
+            expect(response.body.message).equal("Já existe produto com esse nome")
         })
     })
 })
