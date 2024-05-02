@@ -25,3 +25,17 @@ Cypress.Commands.add('createProduct', (token, product, price, description, quant
     failOnStatusCode: false
   })  
 })
+
+Cypress.Commands.add('editProduct', (id, token, product, price, description, quantity)=>{
+  cy.request({
+    method : 'PUT',
+    url : `produtos/${id}`,
+    headers : {authorization : token},
+    body:{
+        "nome": product,
+        "preco": price,
+        "descricao": description,
+        "quantidade": quantity
+      }
+  })
+})
