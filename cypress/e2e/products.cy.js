@@ -1,4 +1,5 @@
 /// < reference types="cypress"/>
+import contract from '../contracts/products.contract'
 
 describe('API Test - Products', () => {
 
@@ -6,6 +7,12 @@ describe('API Test - Products', () => {
     beforeEach(()=>{
         cy.token('mark@test.com', 'test').then(tkn=>{
             token = tkn
+        })
+    })
+
+    it.only('should validate product contract', ()=>{
+        cy.request('produtos').then(response=>{
+            return contract.validateAsync(response.body)
         })
     })
 
