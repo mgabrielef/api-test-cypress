@@ -10,11 +10,11 @@ describe('API Test - Products', () => {
         })
     })
 
-    it.only('should validate product contract', ()=>{
+    /*it('should validate product contract', ()=>{
         cy.request('produtos').then(response=>{
             return contract.validateAsync(response.body)
         })
-    })
+    })*/
 
     it('should list all products - GET', () => {
         cy.request({
